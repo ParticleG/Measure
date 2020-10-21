@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>functions.js</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>Toast.qml</file>
+        <file>ToastManager.qml</file>
+        <file>MainStackView.qml</file>
+        <file>MeasureStackView.qml</file>
+        <file>beaker.svg</file>
+        <file>back.svg</file>
+        <file>dots-vertical.svg</file>
+        <file>camera-off.svg</file>
+        <file>CalculateStackView.qml</file>
+        <file>maskImage.jpg</file>
+        <file>maskImage_samsun.jpg</file>
+    </qresource>
+</RCC>

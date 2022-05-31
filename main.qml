@@ -133,50 +133,6 @@ ApplicationWindow {
             ctx.beginPath()
             ctx.arc(_centerPoint.x, _centerPoint.y, 2, 0, Math.PI * 2.0, false)
             ctx.fill()
-
-//            ctx.strokeStyle = "lightsalmon"
-//            ctx.beginPath()
-//            if(_refractedLightLine.z - _refractedLightLine.x < 0){
-//                if(_refractedLightLine.w - _refractedLightLine.y < 0){
-//                    console.log(" - - ")
-//                    ctx.arc(_refractedLightLine.x,
-//                            _refractedLightLine.y, 25,
-//                            Math.atan((_centerPoint.y - _refractedLightLine.y) / (_centerPoint.x - _refractedLightLine.x)),
-//                            Math.atan((_refractedLightLine.w - _refractedLightLine.y) / (_refractedLightLine.z - _refractedLightLine.x)),
-//                            false)
-//                } else {
-//                    console.log(" - + ")
-//                    ctx.arc(_refractedLightLine.x,
-//                            _refractedLightLine.y, 25,
-//                            Math.atan((_refractedLightLine.w - _refractedLightLine.y) / (_refractedLightLine.z - _refractedLightLine.x)),
-//                            Math.atan((_centerPoint.y - _refractedLightLine.y) / (_centerPoint.x - _refractedLightLine.x)),
-//                            false)
-//                }
-//            } else {
-//                if(_refractedLightLine.w - _refractedLightLine.y < 0){
-//                    console.log(" + - ")
-//                    ctx.arc(_refractedLightLine.x,
-//                            _refractedLightLine.y, 25,
-//                            Math.atan((_refractedLightLine.w - _refractedLightLine.y) / (_refractedLightLine.z - _refractedLightLine.x)),
-//                            Math.atan((_centerPoint.y - _refractedLightLine.y) / (_centerPoint.x - _refractedLightLine.x)),
-//                            false)
-//                } else {
-//                    console.log(" + + ")
-//                    ctx.arc(_refractedLightLine.x,
-//                            _refractedLightLine.y, 25,
-//                            Math.atan((_centerPoint.y - _refractedLightLine.y) / (_centerPoint.x - _refractedLightLine.x)),
-//                            Math.atan((_refractedLightLine.w - _refractedLightLine.y) / (_refractedLightLine.z - _refractedLightLine.x)),
-//                            false)
-//                }
-//            }
-//            ctx.stroke()
-//            ctx.beginPath()
-//            ctx.arc(_refractedLightLine.z,
-//                    _refractedLightLine.w, 25,
-//                    Math.atan((_centerPoint.y - _refractedLightLine.w) / (_centerPoint.x - _refractedLightLine.z)),
-//                    Math.atan((_refractedLightLine.y - _refractedLightLine.w) / (_refractedLightLine.x - _refractedLightLine.z)),
-//                    false)
-//            ctx.stroke()
         }
 
         onPaint: {
@@ -202,8 +158,8 @@ ApplicationWindow {
             console.log(_center)
             console.log(_refractedLight)
             calculate_canvas.drawCVResult(_center,_refractedLight)
-            var sweetness = 0.35714286
 //            var sweetness = 30.0 / (Math.sin(_angle) * 29.0) * 6.14 - 7.4432
+            var sweetness = 30.0 / (Math.sin(_angle) * 29.0) * 6.14 - 8.2
             toast_displayer.show("角度：" + _angle.toFixed(4) + "，甜度：" + sweetness.toFixed(4))
             result_label.text = "角度：" + _angle.toFixed(4) + "，甜度：" + sweetness.toFixed(4)
         }

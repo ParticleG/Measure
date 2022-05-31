@@ -12,7 +12,5 @@
         <file>dots-vertical.svg</file>
         <file>camera-off.svg</file>
         <file>CalculateStackView.qml</file>
-        <file>maskImage.jpg</file>
-        <file>maskImage_samsun.jpg</file>
     </qresource>
 </RCC>

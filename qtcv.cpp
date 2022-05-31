@@ -5,7 +5,7 @@
 
 void QtCV::processImage(const QString &inputFilePath) {
     Mat rawImage = imread(inputFilePath.toStdString());
-    Mat inputImage, hsvImage, thresholdImage, gaussianBlurredImage, cannyImage, dilateImage, outputImage;
+    Mat inputImage, hsvImage, thresholdImage, medianBlurredImage, cannyImage, dilateImage, outputImage;
     if (rawImage.cols > rawImage.rows) {
         Mat rawCopy = Mat(rawImage.rows, rawImage.cols, rawImage.depth());
         transpose(rawImage, rawCopy);
@@ -14,34 +14,30 @@ void QtCV::processImage(const QString &inputFilePath) {
     } else {
         resize(rawImage, inputImage, Size(), 0.5, 0.5, 3);
     }
-
-    QFile file(":/maskImage.jpg");
-    Mat   maskImage, maskedImage;
-    if (file.open(QIODevice::ReadOnly)) {
-        qint64             sz = file.size();
-        std::vector<uchar> buf(sz);
-        file.read((char *)buf.data(), sz);
-        maskImage = imdecode(buf, IMREAD_GRAYSCALE);
-    }
-
     cvtColor(inputImage, hsvImage, COLOR_BGR2HSV);
-    vector<Mat> channels;
-    split(hsvImage, channels);
-    equalizeHist(channels[2], channels[2]);
-    merge(channels, hsvImage);
+//    vector<Mat> channels;
+//    split(hsvImage, channels);
+//    equalizeHist(channels[2], channels[2]);
+//    merge(channels, hsvImage);
+//    imwrite(inputFilePath.left(inputFilePath.lastIndexOf("/")).toStdString() + "/hsvImage.jpg", hsvImage);
 
     Mat tempThresholdImage;
     inRange(hsvImage, Scalar(156, 60, 90), Scalar(180, 255, 255), tempThresholdImage);
     inRange(hsvImage, Scalar(0, 60, 90), Scalar(10, 255, 255), thresholdImage);
     addWeighted(tempThresholdImage, 1, thresholdImage, 1, 0, thresholdImage);
+    Mat maskImage, maskedImage;
+    maskImage = Mat::zeros(thresholdImage.rows,thresholdImage.cols,thresholdImage.type());
+    circle(maskImage, Point(maskImage.cols / 2.0, maskImage.rows / 2.0), maskImage.cols / 2.0 - 20, Scalar(255, 255, 255), -1);
     thresholdImage.copyTo(maskedImage, maskImage);
     imwrite(inputFilePath.left(inputFilePath.lastIndexOf("/")).toStdString() + "/maskedImage.jpg", maskedImage);
+    medianBlur(maskedImage, medianBlurredImage, 5);
+    imwrite(inputFilePath.left(inputFilePath.lastIndexOf("/")).toStdString() + "/medianBlurredImage.jpg", medianBlurredImage);
 
-    dilate(maskedImage, maskedImage, getStructuringElement(MORPH_RECT, Size(3, 3)));
-    erode(maskedImage, maskedImage, getStructuringElement(MORPH_RECT, Size(5, 5)));
-    dilate(maskedImage, maskedImage, getStructuringElement(MORPH_RECT, Size(6, 6)));
-    erode(maskedImage, maskedImage, getStructuringElement(MORPH_RECT, Size(7, 7)));
-    dilate(maskedImage, dilateImage, getStructuringElement(MORPH_RECT, Size(7, 7)));
+    dilate(medianBlurredImage, medianBlurredImage, getStructuringElement(MORPH_RECT, Size(3, 3)));
+    erode(medianBlurredImage, medianBlurredImage, getStructuringElement(MORPH_RECT, Size(5, 5)));
+    dilate(medianBlurredImage, medianBlurredImage, getStructuringElement(MORPH_RECT, Size(6, 6)));
+    erode(medianBlurredImage, medianBlurredImage, getStructuringElement(MORPH_RECT, Size(7, 7)));
+    dilate(medianBlurredImage, dilateImage, getStructuringElement(MORPH_RECT, Size(7, 7)));
     imwrite(inputFilePath.left(inputFilePath.lastIndexOf("/")).toStdString() + "/dilateImage.jpg", dilateImage);
 
     outputImage = inputImage.clone();
